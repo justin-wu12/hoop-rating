@@ -166,14 +166,18 @@ function drawHero(ctx, R, ch) {
   const name = (st.name || 'PLAYER').toUpperCase();
   const ns = fitSize(ctx, name, maxX - rx, 76, 34);
   text(ctx, name, rx, nameY, { size: ns, weight: 800, shadow: 'rgba(0,168,255,.35)' });
-  const sub = [(Array.isArray(st.pos) ? st.pos : st.pos ? [st.pos] : []).map((p) => POS_NAME[p]).join('／') || POS_NAME[''], { R: '右手', L: '左手', B: '雙手皆可' }[st.hand], st.height ? st.height + ' cm' : ''].filter(Boolean).join('  ·  ');
-  text(ctx, sub, rx, nameY + 44, { size: 26, color: CC.soft });
+  const sub = [(Array.isArray(st.pos) ? st.pos : st.pos ? [st.pos] : []).map((p) => POS_NAME[p]).join('／') || POS_NAME[''], { R: '右手', L: '左手', B: '雙手皆可' }[st.hand]].filter(Boolean).join('  ·  ');
+  text(ctx, sub, rx, nameY + 40, { size: 26, color: CC.soft });
+  /* 身體數據：身高、體重、臂展（有填的才顯示） */
+  const body = [st.height && `身高 ${st.height} cm`, st.weight && `體重 ${st.weight} kg`, st.wingspan && `臂展 ${st.wingspan} cm`].filter(Boolean).join('  ·  ');
+  const bodyShift = body ? 26 : 0;
+  if (body) text(ctx, body, rx, nameY + 78, { size: fitSize(ctx, body, maxX - rx, 25, 15, 700), color: CC.navy, weight: 700 });
 
   /* OVR 與等級 */
-  text(ctx, 'OVR', rx, nameY + 100, { size: 18, color: CC.soft, px: true });
+  text(ctx, 'OVR', rx, nameY + 100 + bodyShift, { size: 18, color: CC.soft, px: true });
   setFont(ctx, 110, 400, PX);
-  text(ctx, String(stats.ovr), rx, nameY + 215, { size: 110, color: CC.blue, px: true, shadow: CC.navy, sx: 6, sy: 6 });
-  const gx = maxX - 190, gy = nameY + 70;
+  text(ctx, String(stats.ovr), rx, nameY + 215 + bodyShift, { size: 110, color: CC.blue, px: true, shadow: CC.navy, sx: 6, sy: 6 });
+  const gx = maxX - 190, gy = nameY + 70 + bodyShift;
   pixelFrame(ctx, gx, gy, 190, 170, { fill: CC.gold, border: CC.navy, bw: 6, notch: 12, shadow: 'rgba(11,42,85,.3)' });
   text(ctx, 'GRADE', gx + 95, gy + 38, { size: 12, color: CC.white, px: true, align: 'center' });
   text(ctx, stats.grade, gx + 95, gy + 128, { size: 76, color: CC.white, px: true, align: 'center', shadow: CC.navy, sx: 5, sy: 5 });
@@ -183,7 +187,7 @@ function drawHero(ctx, R, ch) {
     ...an.arch.map((a) => ({ label: a.name, fill: CC.blue, color: CC.white })),
     ...(st.tags || []).slice(0, 3).map((t) => ({ label: '#' + t, fill: CC.navy, color: CC.white, border: CC.navy }))
   ];
-  let bottom = flowBadges(ctx, titles, rx, nameY + 252, rx, maxX, 56);
+  let bottom = flowBadges(ctx, titles, rx, nameY + 252 + bodyShift, rx, maxX, 56);
   const skills = (st.habits || []).slice(0, 4).map((h) => ({ label: h.replace('／', '/') + ((st.habitGrades || {})[h] ? ' ' + st.habitGrades[h] : ''), prefix: '技能', fill: CC.white, color: CC.navy, border: CC.blue, pfill: CC.blue }));
   if (skills.length) bottom = flowBadges(ctx, skills, rx, bottom + 14, rx, maxX, 56);
   return Math.max(py + ph, bottom);

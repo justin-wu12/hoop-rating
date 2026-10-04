@@ -7,7 +7,7 @@ const STEPS = 7;
 
 function defaultState() {
   return {
-    name: '', jersey: '', gender: 'm', height: '', weight: '', pos: [], hand: 'R', level: null,
+    name: '', jersey: '', gender: 'm', height: '', weight: '', wingspan: '', pos: [], hand: 'R', level: null,
     ath: { jump: 50, speed: 50, agility: 50, endurance: 50, strength: 50 },
     pro: { vjStand: '', vjRun: '', sprint: '' },
     shoot: { three: { att: '', made: '' }, mid: { att: '', made: '' }, ft: { att: '', made: '' }, self: 50 },

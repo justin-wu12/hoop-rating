@@ -279,8 +279,10 @@ function analyze(st, stats) {
     /* 體型：高大的對高大、嬌小的對嬌小加分；高大對嬌小則扣分（只有球星有標體型時才比） */
     const sizeBonus = t.size && sizeKind ? (t.size === sizeKind ? 0.06 : -0.05) : 0;
     const bonus = skillBonus + sizeBonus + (t.pos[0] === mine[0] ? 0.04 : 0) + (dunkMode && t.dk ? 0.06 : 0);
-    return { t, dk: !!t.dk, boost, sim: clamp(Math.round(50 + 42 * cos * weight + bonus * 100), 40, 96) };
-  }).sort((p, q) => q.sim - p.sim);
+    /* raw 是沒有被截斷在 96 的分數，同分時用它決定誰排前面（例如標誌性招牌的加成） */
+    const raw = 50 + 42 * cos * weight + bonus * 100;
+    return { t, dk: !!t.dk, boost, raw, sim: clamp(Math.round(raw), 40, 96) };
+  }).sort((p, q) => q.raw - p.raw);
   let matches = scored.slice(0, dunkMode ? 4 : 3);
   if (dunkMode) {
     let n = matches.filter((m) => m.dk).length;
@@ -290,7 +292,7 @@ function analyze(st, stats) {
       if (idx < 0) break;
       matches[idx] = extra.shift(); n++;
     }
-    matches.sort((p, q) => q.sim - p.sim);
+    matches.sort((p, q) => q.raw - p.raw);
   }
   /* 彩蛋：罰球技能達 A- 以上，而且位置有後衛（男子）→ 直接觸發 SGA，名字後面揭曉小字「罰球之神」 */
   const ftSkill = GRADES.indexOf(hg['罰球']) >= GRADES.indexOf('A-') && habSet.has('罰球');
