@@ -137,7 +137,52 @@ const TEMPLATES = [
   { n: 'DeAndre Jordan', dk: true, g: 'm', pos: ['C'], v: [20, 25, 80, 92, 88, 60], hab: ['灌籃／空中終結'], tag: '空接扣將中鋒' },
   { n: 'Dwight Howard', dk: true, g: 'm', pos: ['C'], v: [25, 25, 90, 95, 88, 65], hab: ['灌籃／空中終結'], tag: '禁區霸主扣將' },
   { n: 'Clint Capela', dk: true, g: 'm', pos: ['C'], v: [25, 25, 80, 90, 86, 60], hab: ['灌籃／空中終結'], tag: '空接護框中鋒' },
-  { n: 'Lisa Leslie', dk: true, g: 'f', pos: ['C'], v: [75, 45, 85, 85, 75, 85], hab: ['灌籃／空中終結', '拋投／小勾射'], tag: '開創灌籃先河的中鋒' }
+  { n: 'Lisa Leslie', dk: true, g: 'f', pos: ['C'], v: [75, 45, 85, 85, 75, 85], hab: ['灌籃／空中終結', '拋投／小勾射'], tag: '開創灌籃先河的中鋒' },
+
+  /* ---- 第二批球星：補足各位置與各種體型 ---- */
+  /* size：'big' ＝ 以該位置來說特別高大，'small' ＝ 特別嬌小；對照時會和使用者的身高相對值比較 */
+  /* 控衛 */
+  { n: 'Ben Simmons', g: 'm', pos: ['PG', 'PF'], size: 'big', v: [28, 90, 85, 68, 85, 85], hab: ['突破上籃', '灌籃／空中終結'], tag: '不投三分的高大控衛' },
+  { n: 'Magic Johnson', g: 'm', pos: ['PG', 'SF'], size: 'big', v: [75, 99, 72, 72, 72, 99], hab: ['突破上籃', '拋投／小勾射'], tag: '高大全能控衛' },
+  { n: 'LaMelo Ball', g: 'm', pos: ['PG', 'SG'], size: 'big', v: [78, 93, 60, 62, 72, 85], hab: ['運球急停跳投', '後撤步三分'], tag: '大個子花式控衛' },
+  { n: 'Jason Kidd', g: 'm', pos: ['PG'], v: [60, 96, 82, 68, 70, 96], hab: ['突破上籃'], tag: '大三元控衛' },
+  { n: 'Rajon Rondo', g: 'm', pos: ['PG'], v: [45, 95, 76, 40, 65, 96], hab: ['突破上籃'], tag: '傳球至上的組織者' },
+  { n: 'Steve Nash', g: 'm', pos: ['PG'], v: [92, 94, 38, 25, 50, 95], hab: ['罰球', '接球投籃', '運球急停跳投'], tag: '雙料 MVP 射手控衛' },
+  { n: 'John Stockton', g: 'm', pos: ['PG'], v: [78, 97, 82, 30, 55, 96], hab: ['接球投籃', '罰球線跳投'], tag: '助攻抄截王' },
+  { n: 'Russell Westbrook', dk: true, g: 'm', pos: ['PG'], v: [52, 86, 72, 72, 97, 70], hab: ['突破上籃', '灌籃／空中終結'], tag: '大三元爆發控衛' },
+  { n: 'John Wall', g: 'm', pos: ['PG'], v: [55, 90, 72, 45, 96, 70], hab: ['突破上籃'], tag: '極速突破控衛' },
+  { n: 'Muggsy Bogues', g: 'm', pos: ['PG'], size: 'small', v: [45, 90, 82, 25, 70, 85], hab: ['突破上籃'], tag: '全聯盟最矮的抄截大師' },
+  { n: 'Isaiah Thomas', g: 'm', pos: ['PG'], size: 'small', v: [86, 78, 35, 20, 70, 80], hab: ['突破上籃', '運球急停跳投', '罰球'], tag: '小個子得分機器' },
+  { n: 'Trae Young', g: 'm', pos: ['PG'], size: 'small', v: [88, 96, 35, 20, 60, 82], hab: ['後撤步三分', '拋投／小勾射'], tag: '長距離組織射手' },
+  { n: 'Tyrese Haliburton', g: 'm', pos: ['PG'], v: [82, 95, 60, 35, 65, 93], hab: ['接球投籃', '運球急停跳投'], tag: '助攻型射手控衛' },
+  { n: 'Jalen Brunson', g: 'm', pos: ['PG'], v: [85, 82, 45, 25, 60, 92], hab: ['運球急停跳投', '後仰跳投'], tag: '中距離得分控衛' },
+  /* 後衛與前鋒 */
+  { n: 'Tony Allen', g: 'm', pos: ['SG', 'SF'], v: [32, 40, 99, 40, 82, 85], hab: [], tag: '鎖喉之王' },
+  { n: 'Dwyane Wade', g: 'm', pos: ['SG'], v: [80, 86, 88, 55, 92, 92], hab: ['突破上籃', '歐洲步', '灌籃／空中終結'], tag: '全能得分後衛' },
+  { n: 'Donovan Mitchell', g: 'm', pos: ['SG'], v: [85, 78, 58, 35, 90, 76], hab: ['運球急停跳投', '灌籃／空中終結'], tag: '爆發得分後衛' },
+  { n: 'Anthony Edwards', dk: true, g: 'm', pos: ['SG'], v: [82, 70, 72, 50, 97, 72], hab: ['灌籃／空中終結', '運球急停跳投'], tag: '空中得分後衛' },
+  { n: 'Marcus Smart', g: 'm', pos: ['SG', 'PG'], v: [60, 72, 92, 35, 75, 90], hab: [], tag: '防守型後衛' },
+  { n: 'Scottie Pippen', g: 'm', pos: ['SF'], v: [75, 88, 96, 65, 86, 95], hab: ['突破上籃', '灌籃／空中終結'], tag: '防守全能前鋒' },
+  { n: 'Paul Pierce', g: 'm', pos: ['SF'], v: [88, 70, 65, 50, 60, 92], hab: ['後仰跳投', '後撤步三分'], tag: '關鍵球殺手' },
+  { n: 'Carmelo Anthony', g: 'm', pos: ['SF', 'PF'], v: [90, 60, 50, 60, 70, 70], hab: ['後仰跳投', '運球急停跳投', '罰球線跳投'], tag: '純得分型前鋒' },
+  { n: 'Dennis Rodman', g: 'm', pos: ['PF', 'SF'], v: [20, 40, 95, 99, 80, 85], hab: [], tag: '籃板怪傑' },
+  { n: 'Charles Barkley', g: 'm', pos: ['PF'], v: [75, 60, 65, 92, 75, 80], hab: ['突破上籃', '後仰跳投'], tag: '小號大前鋒籃板王' },
+  { n: 'Karl Malone', g: 'm', pos: ['PF'], v: [80, 60, 75, 86, 72, 85], hab: ['罰球線跳投', '拋投／小勾射'], tag: '擋拆終結者' },
+  { n: 'Kevin Garnett', g: 'm', pos: ['PF', 'C'], v: [82, 72, 95, 88, 82, 96], hab: ['罰球線跳投'], tag: '防守全能大前鋒' },
+  /* 中鋒 */
+  { n: "Shaquille O'Neal", dk: true, g: 'm', pos: ['C'], v: [40, 40, 85, 96, 90, 72], hab: ['灌籃／空中終結'], tag: '禁區統治者' },
+  { n: 'Hakeem Olajuwon', g: 'm', pos: ['C'], v: [86, 55, 96, 95, 85, 92], hab: ['翻身後仰', '拋投／小勾射'], sig: ['翻身後仰'], tag: '夢幻腳步' },
+  { n: 'Yao Ming', g: 'm', pos: ['C'], v: [76, 48, 80, 86, 50, 86], hab: ['罰球線跳投', '拋投／小勾射'], tag: '高大溫柔型中鋒' },
+  { n: 'Dikembe Mutombo', g: 'm', pos: ['C'], v: [25, 20, 99, 92, 72, 82], hab: [], tag: '護框之神' },
+  { n: 'Ben Wallace', g: 'm', pos: ['C'], v: [15, 25, 96, 96, 80, 85], hab: [], tag: '防守籃板怪' },
+  { n: 'Steven Adams', g: 'm', pos: ['C'], v: [40, 50, 76, 93, 55, 75], hab: [], tag: '卡位肉盾' },
+  /* 女子 */
+  { n: 'Sylvia Fowles', g: 'f', pos: ['C'], v: [55, 40, 95, 92, 80, 85], hab: ['灌籃／空中終結'], tag: '護框籃板型中鋒' },
+  { n: 'Maya Moore', g: 'f', pos: ['SF'], v: [88, 72, 78, 65, 75, 90], hab: ['接球投籃', '運球急停跳投'], tag: '全能得分前鋒' },
+  { n: 'Tamika Catchings', g: 'f', pos: ['SF', 'PF'], v: [76, 70, 97, 82, 80, 96], hab: [], tag: '防守型全能前鋒' },
+  { n: 'Aliyah Boston', g: 'f', pos: ['C'], v: [72, 58, 85, 85, 66, 80], hab: ['拋投／小勾射'], tag: '穩健全能中鋒' },
+  { n: 'Courtney Vandersloot', g: 'f', pos: ['PG'], v: [75, 97, 55, 35, 60, 95], hab: ['運球急停跳投'], tag: '助攻型控衛' },
+  { n: 'Skylar Diggins-Smith', g: 'f', pos: ['PG', 'SG'], v: [82, 86, 60, 40, 70, 86], hab: ['運球急停跳投'], tag: '得分型控衛' }
 ];
 
 /* ---------- 角色建立選項（像素球員） ---------- */

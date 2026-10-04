@@ -76,6 +76,8 @@ function computeStats(st) {
   const ps = posList(st);
   const off = ps.length ? avg(ps.map((p) => POS_OFF[p] || 0)) : 0;
   const hs = h !== null ? zScore((h - (B.height[L][0] + off)) / B.height[L][1]) : AVG;
+  /* 體型：身高相對於「同層級、同位置」平均的標準差；≥+0.8 算高大，≤-0.8 算嬌小 */
+  const sizeZ = h !== null ? (h - (B.height[L][0] + off)) / B.height[L][1] : null;
 
   /* 籃板：潛力（跳躍＋身高）＋比賽表現（自評） */
   const rebPot = Math.round(h !== null ? 0.6 * comps.jump + 0.4 * hs : comps.jump); /* 沒填身高就只看彈跳 */
@@ -129,7 +131,7 @@ function computeStats(st) {
   const axes = { S: clamp(S, 1, 99), P: clamp(P, 1, 99), D: clamp(D, 1, 99), R: clamp(R, 1, 99), A: clamp(A, 1, 99), I: clamp(I, 1, 99) };
   const ovr = clamp(Math.round(Object.keys(OVR_W).reduce((s, k) => s + axes[k] * OVR_W[k], 0)), 1, 99);
   return {
-    axes, ovr, grade: scoreGrade(ovr), notes, comps, parts, dribble,
+    axes, ovr, grade: scoreGrade(ovr), notes, comps, parts, dribble, sizeZ,
     potential: { R: rebPot, D: defPot }, perf: { R: rebPerf, D: defPerf }
   };
 }
@@ -168,6 +170,7 @@ function analyze(st, stats) {
   const a = stats.axes;
   const habSet = new Set(st.habits || []);
   const hg = st.habitGrades || {};
+  const sizeKind = stats.sizeZ == null ? null : stats.sizeZ >= 0.8 ? 'big' : stats.sizeZ <= -0.8 ? 'small' : null;
   const mine = posList(st);
   const c = { ...a, inPos: (...p) => p.some((x) => mine.includes(x)), h: (x) => habSet.has(x) };
   /* 位置不符的稱號扣分（沒選位置就不扣）；長人不適合「接球射手」「持球大核」這類後衛稱號 */
@@ -273,7 +276,9 @@ function analyze(st, stats) {
       }
       else skillBonus += 0.04;
     });
-    const bonus = skillBonus + (t.pos[0] === mine[0] ? 0.04 : 0) + (dunkMode && t.dk ? 0.06 : 0);
+    /* 體型：高大的對高大、嬌小的對嬌小加分；高大對嬌小則扣分（只有球星有標體型時才比） */
+    const sizeBonus = t.size && sizeKind ? (t.size === sizeKind ? 0.06 : -0.05) : 0;
+    const bonus = skillBonus + sizeBonus + (t.pos[0] === mine[0] ? 0.04 : 0) + (dunkMode && t.dk ? 0.06 : 0);
     return { t, dk: !!t.dk, boost, sim: clamp(Math.round(50 + 42 * cos * weight + bonus * 100), 40, 96) };
   }).sort((p, q) => q.sim - p.sim);
   let matches = scored.slice(0, dunkMode ? 4 : 3);
