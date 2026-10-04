@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HOOP RATING 籃球能力值評級</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<header class="topbar">
+  <div class="brand"><span class="logo">◈</span> HOOP RATING</div>
+  <div class="progress" id="progress" hidden><i id="progressBar"></i></div>
+  <button type="button" class="sound" id="soundBtn" data-sfx="1" aria-label="音效與音樂開關" aria-pressed="true">♪ ON</button>
+</header>
+
+<main>
+  <!-- 首頁 -->
+  <section id="intro" class="screen active">
+    <div class="panel hero">
+      <p class="eyebrow">PLAYER RATING SYSTEM</p>
+      <h1>籃球能力值評級</h1>
+      <p class="lead">回答幾個問題，捏出你的像素球員，生成專屬球員卡：六角雷達圖、毒舌 AI 評語、NBA 風格對照，還能一鍵分享到社群。</p>
+      <ul class="points">
+        <li>約 3 分鐘完成，大部分題目可以跳過</li>
+        <li>能力值 <b>70 ＝ 你所在層級的平均</b></li>
+        <li>資料只存在你的瀏覽器，不會上傳</li>
+        <li>有音效和背景音樂，右上角可以關掉</li>
+      </ul>
+      <button class="btn primary big" id="startBtn" data-sfx="1">開始建立球員檔案</button>
+      <p class="fine">評價僅供娛樂參考，基準數據多為估計值。</p>
+    </div>
+  </section>
+
+  <!-- 問答 -->
+  <form id="wizard" class="screen" autocomplete="off">
+    <!-- 0 球員檔案 -->
+    <section class="step panel" data-step="0">
+      <p class="eyebrow">STEP 1 / 7</p>
+      <h2>建立球員檔案</h2>
+      <label class="field"><span>球員名字 *</span><input type="text" data-path="name" maxlength="20" placeholder="例如：Justin"></label>
+      <div class="row2">
+        <label class="field"><span>背號（選填）</span><input type="number" data-path="jersey" min="0" max="99" inputmode="numeric" placeholder="例如：7"></label>
+        <div class="field"><span>性別</span>
+          <div class="chips" data-path="gender"><button type="button" class="chip" data-value="m">男</button><button type="button" class="chip" data-value="f">女</button></div>
+        </div>
+      </div>
+      <div class="row2">
+        <label class="field"><span>身高（cm）</span><input type="number" data-path="height" min="120" max="240" inputmode="numeric" placeholder="例如：178"></label>
+        <label class="field"><span>體重（kg）</span><input type="number" data-path="weight" min="30" max="200" inputmode="numeric" placeholder="例如：70"></label>
+      </div>
+      <div class="field"><span>擅長的場上位置 <small style="font-weight:400;color:var(--soft)">（可複選，最多 3 個，第一個是主要位置）</small></span>
+        <div class="chips" data-path="pos" data-multi="1">
+          <button type="button" class="chip" data-value="PG">控衛 PG</button><button type="button" class="chip" data-value="SG">得分後衛 SG</button>
+          <button type="button" class="chip" data-value="SF">小前鋒 SF</button><button type="button" class="chip" data-value="PF">大前鋒 PF</button>
+          <button type="button" class="chip" data-value="C">中鋒 C</button><button type="button" class="chip" data-value="">不確定</button>
+        </div>
+      </div>
+      <div class="field"><span>慣用手</span>
+        <div class="chips" data-path="hand">
+          <button type="button" class="chip" data-value="R">右手</button><button type="button" class="chip" data-value="L">左手</button><button type="button" class="chip" data-value="B">雙手皆可</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1 層級 -->
+    <section class="step panel" data-step="1">
+      <p class="eyebrow">STEP 2 / 7</p>
+      <h2>你的參賽層級</h2>
+      <p class="hint">這是最重要的設定：你的能力值 70 ＝ 這個層級的平均水準。</p>
+      <div id="levelCards" class="cards"></div>
+    </section>
+
+    <!-- 2 運動能力 -->
+    <section class="step panel" data-step="2">
+      <p class="eyebrow">STEP 3 / 7</p>
+      <h2>運動能力</h2>
+      <p class="hint">拉動滑桿，說說你在<b>同層級球員裡</b>排在哪裡。PR 50 ＝ 平均，PR 80 ＝ 贏過 80% 的人。</p>
+      <div id="athSliders"></div>
+      <details class="pro">
+        <summary>我有專業體測數據（選填，填了會優先採用）</summary>
+        <div class="row3">
+          <label class="field"><span>原地垂直彈跳 cm</span><input type="number" data-path="pro.vjStand" step="0.5" inputmode="decimal" placeholder="摸高法"></label>
+          <label class="field"><span>助跑垂直彈跳 cm</span><input type="number" data-path="pro.vjRun" step="0.5" inputmode="decimal" placeholder="摸高法"></label>
+          <label class="field"><span>30 公尺衝刺 秒</span><input type="number" data-path="pro.sprint" step="0.01" inputmode="decimal" placeholder="例如 4.5"></label>
+        </div>
+        <p class="fine">垂直彈跳請用摸高法量測，用跳躍墊的數字會偏低。</p>
+      </details>
+    </section>
+
+    <!-- 3 投籃 -->
+    <section class="step panel" data-step="3">
+      <p class="eyebrow">STEP 4 / 7</p>
+      <h2>投籃能力</h2>
+      <p class="hint">先填「空檔情境」的命中數據，沒有數據就直接用自評。</p>
+      <div class="shoot-grid">
+        <div class="shoot-row"><b>空檔三分</b>
+          <label>投 <input type="number" min="0" inputmode="numeric" data-path="shoot.three.att"></label>
+          <label>進 <input type="number" min="0" inputmode="numeric" data-path="shoot.three.made"></label></div>
+        <div class="shoot-row"><b>空檔中距離</b>
+          <label>投 <input type="number" min="0" inputmode="numeric" data-path="shoot.mid.att"></label>
+          <label>進 <input type="number" min="0" inputmode="numeric" data-path="shoot.mid.made"></label></div>
+        <div class="shoot-row"><b>罰球</b>
+          <label>投 <input type="number" min="0" inputmode="numeric" data-path="shoot.ft.att"></label>
+          <label>進 <input type="number" min="0" inputmode="numeric" data-path="shoot.ft.made"></label></div>
+      </div>
+      <div id="shootSlider"></div>
+      <h3>擅長的投籃區域 <small>（選填，點擊標記）</small></h3>
+      <svg id="zoneMap" viewBox="0 0 500 470" class="court" role="img" aria-label="半場熱區地圖"></svg>
+      <p class="fine" id="zoneNames">尚未標記</p>
+      <h3>技能包：投籃習慣與終結方式 <small>（可複選，會以「技能」標籤放上卡片）</small></h3>
+      <div id="habitChips" class="chips wrap"></div>
+      <div id="habitGrades" class="skills" hidden></div>
+      <p class="fine">選了技能後，可以替它評等級（C ＝ 層級平均）。<b>招牌技能達到 A- 以上，會提高對應球星的風格相似度</b>，例如後撤步三分 A → Harden、Curry；金雞獨立 A → Dirk；天勾 A → 賈霸；打板中投 A → Duncan。<b>罰球達到 A- 以上而且是後衛，會有驚喜。</b></p>
+      <div class="custom-add tag-add"><input type="text" id="habitInput" maxlength="12" placeholder="自訂技能，例如：單腳跳投、勾射"><button type="button" class="btn small" id="habitAdd">加入</button></div>
+    </section>
+
+    <!-- 4 運球 -->
+    <section class="step panel" data-step="4">
+      <p class="eyebrow">STEP 5 / 7</p>
+      <h2>運球技能包</h2>
+      <p class="hint">等級從 E- 到 A+，<b>C 是你所在層級的平均</b>。不會的技能留空就好。<b>任何一項達到 A 以上，會解鎖「XX 大師」標籤</b>，例如背後運球 A → 背運大師。</p>
+      <label class="field"><span>整體運球等級</span><select data-path="dribble.overall" id="dribbleOverall"></select></label>
+      <div id="skillRows" class="skills"></div>
+      <div class="custom-add">
+        <input type="text" id="customName" maxlength="12" placeholder="自訂技能，例如：Kyrie 變向">
+        <select id="customGrade"></select>
+        <button type="button" class="btn small" id="customAdd">加入</button>
+      </div>
+      <div id="customList" class="chips wrap"></div>
+      <div id="passSlider"></div>
+    </section>
+
+    <!-- 5 籃板防守球商 -->
+    <section class="step panel" data-step="5">
+      <p class="eyebrow">STEP 6 / 7</p>
+      <h2>籃板、防守與球商</h2>
+      <p class="hint">網站會先用你的運動能力推算籃板和防守的「潛力」，再結合你對自己表現的感受，綜合評分。</p>
+      <div class="potential" id="potentialBox"></div>
+      <h3>籃板（你在同層級的 PR）</h3>
+      <div id="rebSliders"></div>
+      <h3>防守（你在同層級的 PR）</h3>
+      <div id="defSliders"></div>
+      <h3>比賽判斷</h3>
+      <div id="iqSliders"></div>
+      <div class="row3">
+        <label class="field"><span>助攻失誤比</span>
+          <select data-path="iq.atr"><option value="">不知道</option><option value="3">3 以上</option><option value="2">約 2</option><option value="1">約 1</option><option value="0.5">0.5 以下</option></select></label>
+        <label class="field"><span>平均每場犯規</span>
+          <select data-path="iq.fouls"><option value="">不知道</option><option value="1">0～1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5 以上</option></select></label>
+        <label class="field"><span>投籃選擇</span>
+          <select data-path="iq.select"><option value="">看情況</option><option value="good">只投擅長的</option><option value="mid">一半一半</option><option value="bad">常常亂投</option></select></label>
+      </div>
+    </section>
+
+    <!-- 6 角色 -->
+    <section class="step panel" data-step="6">
+      <p class="eyebrow">STEP 7 / 7</p>
+      <h2>建立你的角色與頭像</h2>
+      <p class="hint">捏一個像素球員，球員卡上會放他運球的全身像。臉不用選。你也可以另外放上自己的大頭照，兩個功能可以一起用。</p>
+      <div class="creator">
+        <div class="char-preview">
+          <canvas id="charCanvas" width="264" height="396" aria-label="角色預覽"></canvas>
+          <button type="button" class="btn small" id="randChar">隨機</button>
+        </div>
+        <div id="charOptions"></div>
+      </div>
+      <h3>大頭照 <small>（選填，只在你的瀏覽器裡處理，不會上傳）</small></h3>
+      <label class="upload" id="uploadBox">
+        <input type="file" accept="image/*" id="photoInput" hidden>
+        <img id="photoPreview" alt="" hidden>
+        <span id="uploadText">點擊選擇照片</span>
+      </label>
+      <div class="pm-chips chips wrap" hidden></div>
+      <button type="button" class="btn small ghost" id="photoClear" hidden>移除照片</button>
+    </section>
+
+    <div class="nav">
+      <button type="button" class="btn ghost" id="backBtn" data-sfx="1">上一步</button>
+      <button type="button" class="btn primary" id="nextBtn" data-sfx="1">下一步</button>
+    </div>
+  </form>
+
+  <!-- 結果 -->
+  <section id="result" class="screen">
+    <div class="result-wrap">
+      <canvas id="cardCanvas" class="card-canvas"></canvas>
+      <div class="actions">
+        <button class="btn primary" id="shareBtn">分享</button>
+        <button class="btn" id="downloadBtn">下載圖片</button>
+        <button class="btn ghost" id="editBtn">修改答案</button>
+        <button class="btn ghost" id="resetBtn">重新開始</button>
+      </div>
+      <div class="panel" id="photoModePanel" hidden>
+        <h3 style="margin-top:0">卡片主圖 <small>（像素角色和大頭照怎麼放）</small></h3>
+        <div class="pm-chips chips wrap"></div>
+      </div>
+      <div class="panel" id="tagsPanel">
+        <h3 style="margin-top:0">有趣標籤 <small>（★ 是推薦，點擊決定要不要以「#」標籤放上卡片，最多 3 個）</small></h3>
+        <div id="tagList" class="chips wrap"></div>
+        <div class="custom-add tag-add"><input type="text" id="tagInput" maxlength="12" placeholder="自訂標籤，例如：公園扛霸子"><button type="button" class="btn small" id="tagAdd">加入</button></div>
+      </div>
+      <div class="panel" id="comments"></div>
+      <div class="panel" id="breakdown"></div>
+      <div class="panel" id="matches"></div>
+      <p class="fine center">基準數據多為估計值，風格對照依球風形狀比較，非官方評價，僅供娛樂。</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <p>HOOP RATING 是粉絲自製的娛樂小工具，與 NBA、WNBA 及任何球員、球隊皆無關聯。球星名字僅用於球風比喻，能力形狀為作者主觀設定；各層級基準數據多為估計值。你填的資料只存在你自己的瀏覽器裡。</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="calc.js"></script>
+<script src="court.js"></script>
+<script src="sprite.js"></script>
+<script src="audio.js"></script>
+<script src="card.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
